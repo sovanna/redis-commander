@@ -57,6 +57,7 @@ var args = optimist
   .options('nosave', {
      alias: 'ns',
     boolean: true,
+    default: true,
     describe: 'Do not save new connections to config.'
   })
   .argv;
