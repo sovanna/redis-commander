@@ -109,12 +109,16 @@ myUtils.getConfig(function (err, config) {
           });
         }
         config.default_connections.push(newDefault);
-        myUtils.saveConfig(config, function (err) {
-          if (err) {
-            console.log("Problem saving config.");
-            console.error(err);
-          }
-        });
+
+        if (!args['nosave']) {
+          myUtils.saveConfig(config, function (err) {
+            if (err) {
+              console.log("Problem saving config.");
+              console.error(err);
+            }
+          });
+        }
+
         setUpConnection(redisConnections.getLast(), db);
       }
     } else if (config.default_connections.length == 0) {
@@ -166,7 +170,7 @@ function connectToDB (redisConnection, db) {
   });
 }
 
-function startWebApp () {     
+function startWebApp () {
   httpServerOptions = {webPort: args.port, webAddress: args.address, username: args["http-auth-username"], password: args["http-auth-password"]};
   console.log("No Save: " + args["nosave"]);
   app(httpServerOptions, redisConnections, args["nosave"]);
